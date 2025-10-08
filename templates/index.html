@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Attendance System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      background: linear-gradient(270deg, #89f7fe, #66a6ff, #ff9a9e, #fad0c4);
+      background-size: 800% 800%;
+      animation: gradientShift 15s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      width: 450px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.25);
+      animation: slideIn 1.5s ease;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .container img.logo {
+      width: 80px;
+      margin-bottom: 15px;
+      animation: floatLogo 3s ease-in-out infinite;
+    }
+
+    @keyframes floatLogo {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    h1 {
+      color: #333;
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #444;
+      margin: 15px 0;
+      font-size: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    button {
+      background: linear-gradient(135deg, #66a6ff, #89f7fe);
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #4a90e2, #66a6ff);
+      transform: scale(1.05);
+    }
+
+    /* Stickers */
+    .sticker {
+      position: absolute;
+      width: 60px;
+      opacity: 0.9;
+      animation: floatSticker 6s ease-in-out infinite alternate;
+    }
+
+    .sticker1 { top: -20px; left: -20px; animation-delay: 0s; }
+    .sticker2 { bottom: -20px; right: -20px; animation-delay: 2s; }
+
+    @keyframes floatSticker {
+      from { transform: translateY(0) rotate(0deg); }
+      to { transform: translateY(20px) rotate(15deg); }
+    }
+
+    /* Floating circles background */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      animation: moveCircles 20s linear infinite;
+      z-index: 1;
+    }
+
+    .circle.small { width: 40px; height: 40px; top: 20%; left: 10%; }
+    .circle.medium { width: 80px; height: 80px; top: 60%; left: 70%; }
+    .circle.large { width: 120px; height: 120px; top: 30%; left: 80%; }
+
+    @keyframes moveCircles {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-50px) translateX(30px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+
+    /* Animation */
+    @keyframes slideIn {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating circles -->
+  <div class="circle small"></div>
+  <div class="circle medium"></div>
+  <div class="circle large"></div>
+
+  <div class="container">
+    <!-- Logo -->
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="logo" alt="Logo">
+
+    <h1>Welcome to SmartTrack</h1>
+
+    <!-- Admin Login -->
+    <h2>Admin Login</h2>
+    <form action="{{ url_for('admin_login') }}" method="POST">
+      <input type="text" name="username" placeholder="Username" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+
+    <!-- Student Login -->
+    <h2>Student Login</h2>
+    <form action="{{ url_for('student_login') }}" method="POST">
+      <input type="email" name="email" placeholder="Email" required>
+      <button type="submit">Login</button>
+    </form>
+
+    <!-- Stickers -->
+    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" class="sticker sticker1" alt="Sticker1">
+    <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" class="sticker sticker2" alt="Sticker2">
+  </div>
+</body>
+</html>

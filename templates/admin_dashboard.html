@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffecd2, #fcb69f, #a1c4fd, #c2e9fb);
+      background-size: 400% 400%;
+      animation: gradientMove 12s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .dashboard {
+      width: 900px;
+      background: #ffffff;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+      animation: slideDown 1.5s ease;
+      position: relative;
+    }
+
+    .dashboard img.logo {
+      width: 80px;
+      display: block;
+      margin: 0 auto 10px auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    a.logout {
+      display: inline-block;
+      text-decoration: none;
+      background: #ff6f61;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 8px;
+      transition: 0.3s;
+      float: right;
+      margin-top: -50px;
+    }
+
+    a.logout:hover {
+      background: #e64c3c;
+    }
+
+    h2 {
+      color: #444;
+      margin-top: 30px;
+      border-left: 5px solid #66a6ff;
+      padding-left: 10px;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    input {
+      flex: 1;
+      min-width: 180px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    button {
+      background: #66a6ff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #4a90e2;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f7f7f7;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    li a {
+      background: #00b894;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    li a:hover {
+      background: #019875;
+    }
+
+    img.chart {
+      display: block;
+      margin: 20px auto;
+      border-radius: 15px;
+      box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Stickers */
+    .sticker {
+      position: absolute;
+      width: 60px;
+      opacity: 0.9;
+    }
+
+    .sticker1 { top: -25px; left: -25px; }
+    .sticker2 { bottom: -25px; right: -25px; }
+
+    /* Animations */
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Logo -->
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="logo" alt="Logo">
+
+    <h1>Admin Dashboard</h1>
+    <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+
+    <!-- Create Event -->
+    <h2>Create Event</h2>
+    <form method="POST" action="{{ url_for('create_event') }}">
+      <input type="text" name="name" placeholder="Event Name" required>
+      <input type="number" step="0.000001" name="latitude" placeholder="Latitude" required>
+      <input type="number" step="0.000001" name="longitude" placeholder="Longitude" required>
+      <input type="number" step="0.1" name="radius" placeholder="Radius (meters)" required>
+      <button type="submit">Create Event</button>
+    </form>
+
+    <!-- Existing Events -->
+    <h2>Existing Events</h2>
+    <ul>
+      {% for event in events %}
+        <li>
+          <span>{{ event.name }} | Location: ({{ event.latitude }}, {{ event.longitude }}), Radius: {{ event.radius }}m</span>
+          <a href="{{ url_for('generate_qr', event_id=event.id) }}">Generate QR</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <!-- Attendance Chart -->
+    {% if attendance_chart_file %}
+      <h2>Attendance Analysis</h2>
+      <img src="{{ url_for('static', filename='attendance_chart.png') }}" alt="Attendance Chart" class="chart" width="600">
+    {% endif %}
+
+    <!-- Feedback Chart -->
+    {% if feedback_chart_file %}
+      <h2>Feedback Analysis</h2>
+      <img src="{{ url_for('static', filename='feedback_chart.png') }}" alt="Feedback Chart" class="chart" width="600">
+    {% endif %}
+
+    <!-- Stickers -->
+    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" class="sticker sticker1" alt="Sticker1">
+    <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" class="sticker sticker2" alt="Sticker2">
+  </div>
+</body>
+</html>

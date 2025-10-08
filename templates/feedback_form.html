@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffecd2, #fcb69f, #a1c4fd, #c2e9fb);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Floating circles */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      animation: floatUp 12s infinite ease-in-out;
+    }
+
+    .circle:nth-child(1) { width: 80px; height: 80px; left: 10%; bottom: -100px; animation-delay: 0s; }
+    .circle:nth-child(2) { width: 120px; height: 120px; left: 70%; bottom: -150px; animation-delay: 4s; }
+    .circle:nth-child(3) { width: 60px; height: 60px; left: 40%; bottom: -120px; animation-delay: 2s; }
+    .circle:nth-child(4) { width: 100px; height: 100px; left: 85%; bottom: -180px; animation-delay: 6s; }
+    .circle:nth-child(5) { width: 50px; height: 50px; left: 25%; bottom: -90px; animation-delay: 8s; }
+
+    .form-container {
+      width: 500px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0px 12px 35px rgba(0, 0, 0, 0.25);
+      animation: slideDown 1.5s ease;
+      position: relative;
+      backdrop-filter: blur(6px);
+    }
+
+    .form-container img.logo {
+      width: 80px;
+      display: block;
+      margin: 0 auto 15px auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: bold;
+      color: #444;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #66a6ff, #89f7fe);
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(102, 166, 255, 0.5);
+    }
+
+    /* ⭐ Star Rating */
+    .star-rating {
+      direction: rtl;
+      display: flex;
+      justify-content: center;
+      font-size: 30px;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+
+    .star-rating input {
+      display: none;
+    }
+
+    .star-rating label {
+      color: #ccc;
+      transition: color 0.3s, transform 0.2s;
+    }
+
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+      color: #ff9800;
+      transform: scale(1.2);
+    }
+
+    /* Stickers */
+    .sticker {
+      position: absolute;
+      width: 60px;
+      opacity: 0.9;
+    }
+
+    .sticker1 { top: -25px; left: -25px; }
+    .sticker2 { bottom: -25px; right: -25px; }
+
+    /* Animations */
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 0; }
+      50% { opacity: 0.5; }
+      100% { transform: translateY(-120vh); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating Circles for Background Effect -->
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+
+  <div class="form-container">
+    <!-- Logo -->
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="logo" alt="Logo">
+
+    <h1>Feedback for Event {{ event_id }}</h1>
+    <form method="POST" action="{{ url_for('feedback_form', event_id=event_id) }}">
+      
+      <label>Rating (1-5):</label>
+      <div class="star-rating">
+        <input type="radio" id="star5" name="rating" value="5" required><label for="star5">★</label>
+        <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+        <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+        <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+        <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+      </div>
+
+      <label>Event Experience:</label>
+      <select name="dropdown" required>
+        <option value="">-- Select an Option --</option>
+        <option value="Excellent">Excellent</option>
+        <option value="Good">Good</option>
+        <option value="Can be improved">Can be improved</option>
+        <option value="Poor">Poor</option>
+      </select>
+
+      <label>Any suggestions:</label>
+      <input type="text" name="short_answer" maxlength="200" required>
+
+      <button type="submit">Submit Feedback</button>
+    </form>
+
+    <!-- Stickers -->
+    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" class="sticker sticker1" alt="Sticker1">
+    <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" class="sticker sticker2" alt="Sticker2">
+  </div>
+</body>
+</html>
